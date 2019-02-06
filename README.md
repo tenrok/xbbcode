@@ -20,6 +20,35 @@ had at least a few of the following issues:
 
 So I wrote this module in an attempt to solve these issues.
 
+## Getting Started
+This plugin requires Grunt `~0.4.0`
+
+If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
+
+First install the grunt:
+```shell
+npm install -g grunt-cli
+```
+
+Obtain all the required modules:
+```shell
+npm install
+```
+
+### Install:
+After you install the required grunt tasks, you can install the project and check the examples:
+
+```shell
+grunt
+```
+This command will test the code with [jshint](http://www.jshint.com/), install the required files, start the server with port 9001, minify the js and css files and watch the changes of the source files to rebuild the files.
+
+### Minified file
+If you just want to minify the files, you can just run the command
+```
+grunt minify
+```
+
 ## Usage (Browser)
 
 Including `xbbcode.js` will expose its API through an `XBBCODE` object that you can use to process BBCode into HTML.

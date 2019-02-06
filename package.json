@@ -1,27 +1,37 @@
 {
-  "name": "xbbcode-parser",
-  "version": "0.1.2",
-  "description": "Allows you to parse BBCode and to extend the markup to add your own tags.",
-  "main": "xbbcode.js",
-  "directories": {
-    "example": "examples"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/patorjk/Extendible-BBCode-Parser.git"
-  },
-  "keywords": [
-    "bbcode",
-    "xbbcode",
-    "parser"
-  ],
-  "author": "Patrick Gillespie",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/patorjk/Extendible-BBCode-Parser/issues"
-  },
-  "homepage": "https://github.com/patorjk/Extendible-BBCode-Parser"
+	"name": "xbbcode-parser",
+	"version": "0.1.2",
+	"description": "Allows you to parse BBCode and to extend the markup to add your own tags.",
+	"devDependencies": {
+		"grunt": "latest",
+		"grunt-contrib-jshint": "latest",
+		"grunt-contrib-uglify": "latest",
+		"grunt-contrib-cssmin": "latest",
+		"grunt-contrib-copy": "latest",
+		"grunt-contrib-connect": "latest",
+		"grunt-contrib-watch": "latest",
+		"grunt-contrib-clean": "latest"
+	},
+	"main": "xbbcode.js",
+	"directories": {
+		"example": "examples"
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/patorjk/Extendible-BBCode-Parser.git"
+	},
+	"keywords": [
+		"bbcode",
+		"xbbcode",
+		"parser"
+	],
+	"author": "Patrick Gillespie",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/patorjk/Extendible-BBCode-Parser/issues"
+	},
+	"homepage": "https://github.com/patorjk/Extendible-BBCode-Parser"
 }
