@@ -37,7 +37,8 @@ var XBBCODE = (function () {
 	// -----------------------------------------------------------------------------
 
 	var me = {},
-		urlPattern = /^(?:https?|file|c):(?:\/{1,3}|\\{1})[-a-zA-Z0-9:;,@#%&()~_?\+=\/\\\.]*$/,
+		//urlPattern = /^(?:https?|file|c):(?:\/{1,3}|\\{1})[-a-zA-Z0-9:;,@#%&()~_?\+=\/\\\.]*$/,
+		urlPattern = /^(?:https?):(?:\/{2})[-a-zA-Z0-9:;,@#%&()~_?\+=\/\\\.]*$/,
 		colorNamePattern = /^(?:aliceblue|antiquewhite|aqua|aquamarine|azure|beige|bisque|black|blanchedalmond|blue|blueviolet|brown|burlywood|cadetblue|chartreuse|chocolate|coral|cornflowerblue|cornsilk|crimson|cyan|darkblue|darkcyan|darkgoldenrod|darkgray|darkgreen|darkkhaki|darkmagenta|darkolivegreen|darkorange|darkorchid|darkred|darksalmon|darkseagreen|darkslateblue|darkslategray|darkturquoise|darkviolet|deeppink|deepskyblue|dimgray|dodgerblue|firebrick|floralwhite|forestgreen|fuchsia|gainsboro|ghostwhite|gold|goldenrod|gray|green|greenyellow|honeydew|hotpink|indianred|indigo|ivory|khaki|lavender|lavenderblush|lawngreen|lemonchiffon|lightblue|lightcoral|lightcyan|lightgoldenrodyellow|lightgray|lightgreen|lightpink|lightsalmon|lightseagreen|lightskyblue|lightslategray|lightsteelblue|lightyellow|lime|limegreen|linen|magenta|maroon|mediumaquamarine|mediumblue|mediumorchid|mediumpurple|mediumseagreen|mediumslateblue|mediumspringgreen|mediumturquoise|mediumvioletred|midnightblue|mintcream|mistyrose|moccasin|navajowhite|navy|oldlace|olive|olivedrab|orange|orangered|orchid|palegoldenrod|palegreen|paleturquoise|palevioletred|papayawhip|peachpuff|peru|pink|plum|powderblue|purple|red|rosybrown|royalblue|saddlebrown|salmon|sandybrown|seagreen|seashell|sienna|silver|skyblue|slateblue|slategray|snow|springgreen|steelblue|tan|teal|thistle|tomato|turquoise|violet|wheat|white|whitesmoke|yellow|yellowgreen)$/,
 		colorCodePattern = /^#?[a-fA-F0-9]{6}$/,
 		emailPattern = /[^\s@]+@[^\s@]+\.[^\s@]+/,
@@ -94,10 +95,10 @@ var XBBCODE = (function () {
 
 	tags = {
 		'b': {
-			openTag: function (params, content) {
+			openTag: function () {
 				return '<span class="xbbcode-b">';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</span>';
 			}
 		},
@@ -106,41 +107,41 @@ var XBBCODE = (function () {
 			the bbcode input when evaluating parent-child tag relationships
 		*/
 		'bbcode': {
-			openTag: function (params, content) {
+			openTag: function () {
 				return '';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '';
 			}
 		},
-		/* Added temporary [br][/br] tag */
+		/* Temporary [br][/br] tag */
 		'br': {
-			openTag: function (params, content) {
-				return '<br>';
+			openTag: function (_params, content) {
+				return '<br>' + content;
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '';
 			}
 		},
 		'center': {
-			openTag: function (params, content) {
+			openTag: function () {
 				return '<span class="xbbcode-center">';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</span>';
 			}
 		},
 		'code': {
-			openTag: function (params, content) {
+			openTag: function () {
 				return '<span class="xbbcode-code">';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</span>';
 			},
 			noParse: true
 		},
 		'color': {
-			openTag: function (params, content) {
+			openTag: function (params) {
 				params = params || '';
 				var colorCode = params.substr(1).toLowerCase() || 'black';
 				colorNamePattern.lastIndex = 0;
@@ -156,7 +157,7 @@ var XBBCODE = (function () {
 				}
 				return '<span style="color:' + colorCode + '">';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</span>';
 			}
 		},
@@ -174,12 +175,12 @@ var XBBCODE = (function () {
 				}
 				return '<a href="mailto:' + myEmail + '">';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</a>';
 			}
 		},
 		'face': {
-			openTag: function (params, content) {
+			openTag: function (params) {
 				params = params || '';
 				var faceCode = params.substr(1) || 'inherit';
 				fontFacePattern.lastIndex = 0;
@@ -188,14 +189,13 @@ var XBBCODE = (function () {
 				}
 				return '<span style="font-family:' + faceCode + '">';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</span>';
 			}
 		},
 		'font': {
-			openTag: function (params, content) {
+			openTag: function (params) {
 				params = params || '';
-
 				var faceCode = params.substr(1) || 'inherit';
 				fontFacePattern.lastIndex = 0;
 				if (!fontFacePattern.test(faceCode)) {
@@ -203,20 +203,20 @@ var XBBCODE = (function () {
 				}
 				return '<span style="font-family:' + faceCode + '">';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</span>';
 			}
 		},
 		'i': {
-			openTag: function (params, content) {
+			openTag: function () {
 				return '<span class="xbbcode-i">';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</span>';
 			}
 		},
 		'img': {
-			openTag: function (params, content) {
+			openTag: function (_params, content) {
 				var myUrl = content;
 				urlPattern.lastIndex = 0;
 				if (!urlPattern.test(myUrl)) {
@@ -224,21 +224,21 @@ var XBBCODE = (function () {
 				}
 				return '<img src="' + myUrl + '"/>';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '';
 			},
 			displayContent: false
 		},
 		'justify': {
-			openTag: function (params, content) {
+			openTag: function () {
 				return '<span class="xbbcode-justify">';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</span>';
 			}
 		},
 		'large': {
-			openTag: function (params, content) {
+			openTag: function (params) {
 				params = params || '';
 				var colorCode = params.substr(1) || 'inherit';
 				colorNamePattern.lastIndex = 0;
@@ -254,89 +254,80 @@ var XBBCODE = (function () {
 				}
 				return '<span class="xbbcode-size-36" style="color:' + colorCode + '">';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</span>';
 			}
 		},
 		'left': {
-			openTag: function (params, content) {
+			openTag: function () {
 				return '<span class="xbbcode-left">';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</span>';
 			}
 		},
 		'li': {
-			openTag: function (params, content) {
+			openTag: function () {
 				return '<li>';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</li>';
 			},
 			restrictParentsTo: ['list', 'ul', 'ol']
 		},
 		'list': {
-			openTag: function (params, content) {
+			openTag: function () {
 				return '<ul>';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</ul>';
 			},
 			restrictChildrenTo: ['*', 'li']
 		},
 		'noparse': {
-			openTag: function (params, content) {
+			openTag: function () {
 				return '';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '';
 			},
 			noParse: true
 		},
 		'ol': {
-			openTag: function (params, content) {
+			openTag: function () {
 				return '<ol>';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</ol>';
 			},
 			restrictChildrenTo: ['*', 'li']
 		},
-		'php': {
-			openTag: function (params, content) {
-				return '<span class="xbbcode-code">';
-			},
-			closeTag: function (params, content) {
-				return '</span>';
-			},
-			noParse: true
-		},
 		'quote': {
-			openTag: function (params, content) {
+			openTag: function () {
 				return '<blockquote class="xbbcode-blockquote">';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</blockquote>';
 			}
 		},
 		'right': {
-			openTag: function (params, content) {
+			openTag: function () {
 				return '<span class="xbbcode-right">';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</span>';
 			}
 		},
 		's': {
-			openTag: function (params, content) {
+			openTag: function () {
 				return '<span class="xbbcode-s">';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</span>';
 			}
 		},
 		'size': {
-			openTag: function (params, content) {
+			openTag: function (params) {
 				params = params || '';
 				var mySize = parseInt(params.substr(1), 10) || 0;
 				if (mySize < 4 || mySize > 40) {
@@ -344,12 +335,12 @@ var XBBCODE = (function () {
 				}
 				return '<span class="xbbcode-size-' + mySize + '">';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</span>';
 			}
 		},
 		'small': {
-			openTag: function (params, content) {
+			openTag: function (params) {
 				params = params || '';
 				var colorCode = params.substr(1) || 'inherit';
 				colorNamePattern.lastIndex = 0;
@@ -365,106 +356,106 @@ var XBBCODE = (function () {
 				}
 				return '<span class="xbbcode-size-10" style="color:' + colorCode + '">';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</span>';
 			}
 		},
 		'sub': {
-			openTag: function (params, content) {
+			openTag: function () {
 				return '<sub>';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</sub>';
 			}
 		},
 		'sup': {
-			openTag: function (params, content) {
+			openTag: function () {
 				return '<sup>';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</sup>';
 			}
 		},
 		'table': {
-			openTag: function (params, content) {
+			openTag: function () {
 				return '<table class="xbbcode-table">';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</table>';
 			},
 			restrictChildrenTo: ['tbody', 'thead', 'tfoot', 'tr']
 		},
 		'tbody': {
-			openTag: function (params, content) {
+			openTag: function () {
 				return '<tbody>';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</tbody>';
 			},
 			restrictChildrenTo: ['tr'],
 			restrictParentsTo: ['table']
 		},
 		'tfoot': {
-			openTag: function (params, content) {
+			openTag: function () {
 				return '<tfoot>';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</tfoot>';
 			},
 			restrictChildrenTo: ['tr'],
 			restrictParentsTo: ['table']
 		},
 		'thead': {
-			openTag: function (params, content) {
+			openTag: function () {
 				return '<thead class="xbbcode-thead">';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</thead>';
 			},
 			restrictChildrenTo: ['tr'],
 			restrictParentsTo: ['table']
 		},
 		'td': {
-			openTag: function (params, content) {
+			openTag: function () {
 				return '<td class="xbbcode-td">';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</td>';
 			},
 			restrictParentsTo: ['tr']
 		},
 		'th': {
-			openTag: function (params, content) {
+			openTag: function () {
 				return '<th class="xbbcode-th">';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</th>';
 			},
 			restrictParentsTo: ['tr']
 		},
 		'tr': {
-			openTag: function (params, content) {
+			openTag: function () {
 				return '<tr class="xbbcode-tr">';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</tr>';
 			},
 			restrictChildrenTo: ['td', 'th'],
 			restrictParentsTo: ['table', 'tbody', 'tfoot', 'thead']
 		},
 		'u': {
-			openTag: function (params, content) {
+			openTag: function () {
 				return '<span class="xbbcode-u">';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</span>';
 			}
 		},
 		'ul': {
-			openTag: function (params, content) {
+			openTag: function () {
 				return '<ul>';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</ul>';
 			},
 			restrictChildrenTo: ['*', 'li']
@@ -483,7 +474,7 @@ var XBBCODE = (function () {
 				}
 				return '<a href="' + myUrl + '">';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</a>';
 			}
 		},
@@ -493,10 +484,10 @@ var XBBCODE = (function () {
 			add will act like this and this tag is an exception to the others.
 		*/
 		'*': {
-			openTag: function (params, content) {
+			openTag: function () {
 				return '<li>';
 			},
-			closeTag: function (params, content) {
+			closeTag: function () {
 				return '</li>';
 			},
 			restrictParentsTo: ['list', 'ul', 'ol']
@@ -506,9 +497,7 @@ var XBBCODE = (function () {
 	// create tag list and lookup fields
 	function initTags() {
 		tagList = [];
-		var prop,
-			ii,
-			len;
+		var prop, ii, len;
 		for (prop in tags) {
 			if (tags.hasOwnProperty(prop)) {
 				if (prop === '*') {
@@ -519,12 +508,10 @@ var XBBCODE = (function () {
 						tagsNoParseList.push(prop);
 					}
 				}
-
 				tags[prop].validChildLookup = {};
 				tags[prop].validParentLookup = {};
 				tags[prop].restrictParentsTo = tags[prop].restrictParentsTo || [];
 				tags[prop].restrictChildrenTo = tags[prop].restrictChildrenTo || [];
-
 				len = tags[prop].restrictChildrenTo.length;
 				for (ii = 0; ii < len; ii++) {
 					tags[prop].validChildLookup[tags[prop].restrictChildrenTo[ii]] = true;
@@ -535,11 +522,9 @@ var XBBCODE = (function () {
 				}
 			}
 		}
-
 		bbRegExp = new RegExp('<bbcl=([0-9]+) (' + tagList.join('|') + ')([ =][^>]*?)?>((?:.|[\\r\\n])*?)<bbcl=\\1 /\\2>', 'gi');
 		pbbRegExp = new RegExp('\\[(' + tagList.join('|') + ')([ =][^\\]]*?)?\\]([^\\[]*?)\\[/\\1\\]', 'gi');
 		pbbRegExp2 = new RegExp('\\[(' + tagsNoParseList.join('|') + ')([ =][^\\]]*?)?\\]([\\s\\S]*?)\\[/\\1\\]', 'gi');
-
 		// create the regex for escaping ['s that aren't apart of tags
 		(function () {
 			var closeTagList = [];
@@ -548,12 +533,11 @@ var XBBCODE = (function () {
 					closeTagList.push('/' + tagList[ii]);
 				}
 			}
-
 			openTags = new RegExp('(\\[)((?:' + tagList.join('|') + ')(?:[ =][^\\]]*?)?)(\\])', 'gi');
 			closeTags = new RegExp('(\\[)(' + closeTagList.join('|') + ')(\\])', 'gi');
 		})();
-
 	}
+
 	initTags();
 
 	// -----------------------------------------------------------------------------
@@ -561,10 +545,8 @@ var XBBCODE = (function () {
 	// -----------------------------------------------------------------------------
 
 	function checkParentChildRestrictions(parentTag, bbcode, bbcodeLevel, tagName, tagParams, tagContents, errQueue) {
-
 		errQueue = errQueue || [];
 		bbcodeLevel++;
-
 		// get a list of all of the child tags to this tag
 		var reTagNames = new RegExp('(<bbcl=' + bbcodeLevel + ' )(' + tagList.join('|') + ')([ =>])', 'gi'),
 			reTagNamesParts = new RegExp('(<bbcl=' + bbcodeLevel + ' )(' + tagList.join('|') + ')([ =>])', 'i'),
@@ -574,13 +556,10 @@ var XBBCODE = (function () {
 			ii,
 			childTag,
 			pInfo = tags[parentTag] || {};
-
 		reTagNames.lastIndex = 0;
-
 		if (!matchingTags) {
 			tagContents = '';
 		}
-
 		for (ii = 0; ii < matchingTags.length; ii++) {
 			reTagNamesParts.lastIndex = 0;
 			childTag = (matchingTags[ii].match(reTagNamesParts))[2].toLowerCase();
@@ -598,7 +577,6 @@ var XBBCODE = (function () {
 				}
 			}
 		}
-
 		tagContents = tagContents.replace(bbRegExp, function (matchStr, bbcodeLevel, tagName, tagParams, tagContents) {
 			errQueue = checkParentChildRestrictions(tagName.toLowerCase(), matchStr, bbcodeLevel, tagName, tagParams, tagContents, errQueue);
 			return matchStr;
@@ -633,17 +611,13 @@ var XBBCODE = (function () {
 	}
 
 	var replaceFunct = function (matchStr, bbcodeLevel, tagName, tagParams, tagContents) {
-
 		tagName = tagName.toLowerCase();
-
 		var processedContent = tags[tagName].noParse ? unprocess(tagContents) : tagContents.replace(bbRegExp, replaceFunct),
 			openTag = tags[tagName].openTag(tagParams, processedContent),
 			closeTag = tags[tagName].closeTag(tagParams, processedContent);
-
 		if (tags[tagName].displayContent === false) {
 			processedContent = '';
 		}
-
 		return openTag + processedContent + closeTag;
 	};
 
@@ -663,9 +637,7 @@ var XBBCODE = (function () {
 	function fixStarTag(text) {
 		text = text.replace(/\[(?!\*[ =\]]|list([ =][^\]]*)?\]|\/list[\]])/ig, '<');
 		text = text.replace(/\[(?=list([ =][^\]]*)?\]|\/list[\]])/ig, '>');
-
-		while (text !== (text = text.replace(/>list([ =][^\]]*)?\]([^>]*?)(>\/list])/gi, function (matchStr, contents, endTag) {
-
+		while (text !== (text = text.replace(/>list([ =][^\]]*)?\]([^>]*?)(>\/list])/gi, function (matchStr) {
 			var innerListTxt = matchStr;
 			while (innerListTxt !== (innerListTxt = innerListTxt.replace(/\[\*\]([^\[]*?)(\[\*\]|>\/list])/i, function (matchStr, contents, endTag) {
 				if (endTag.toLowerCase() === '>/list]') {
@@ -675,22 +647,20 @@ var XBBCODE = (function () {
 				}
 				return '<*]' + contents + endTag;
 			})));
-
 			innerListTxt = innerListTxt.replace(/>/g, '<');
 			return innerListTxt;
 		})));
-
 		// add ['s for our tags back in
 		text = text.replace(/</g, '[');
 		return text;
 	}
 
 	function addBbcodeLevels(text) {
-		while (text !== (text = text.replace(pbbRegExp, function (matchStr, tagName, tagParams, tagContents) {
-			matchStr = matchStr.replace(/\[/g, '<');
-			matchStr = matchStr.replace(/\]/g, '>');
-			return updateTagDepths(matchStr);
+		/* jshint -W083 */
+		while (text !== (text = text.replace(pbbRegExp, function (matchStr) {
+			return updateTagDepths(matchStr.replace(/\[/g, '<').replace(/\]/g, '>'));
 		})));
+		/* jshint +W083 */
 		return text;
 	}
 
@@ -713,25 +683,20 @@ var XBBCODE = (function () {
 	};
 
 	me.process = function (config) {
-
 		var ret = { html: '', error: false },
 			errQueue = [];
-
 		config.text = config.text.replace(/</g, '&lt;'); // escape HTML tag brackets
 		config.text = config.text.replace(/>/g, '&gt;'); // escape HTML tag brackets
-
 		config.text = config.text.replace(openTags, function (matchStr, openB, contents, closeB) {
 			return '<' + contents + '>';
 		});
 		config.text = config.text.replace(closeTags, function (matchStr, openB, contents, closeB) {
 			return '<' + contents + '>';
 		});
-
 		config.text = config.text.replace(/\[/g, '&#91;'); // escape ['s that aren't apart of tags
 		config.text = config.text.replace(/\]/g, '&#93;'); // escape ['s that aren't apart of tags
 		config.text = config.text.replace(/</g, '['); // escape ['s that aren't apart of tags
 		config.text = config.text.replace(/>/g, ']'); // escape ['s that aren't apart of tags
-
 		// process tags that don't have their content parsed
 		while (config.text !== (config.text = config.text.replace(pbbRegExp2, function (matchStr, tagName, tagParams, tagContents) {
 			tagContents = tagContents.replace(/\[/g, '&#91;');
@@ -740,36 +705,27 @@ var XBBCODE = (function () {
 			tagContents = tagContents || '';
 			return '[' + tagName + tagParams + ']' + tagContents + '[/' + tagName + ']';
 		})));
-
 		config.text = fixStarTag(config.text); // add in closing tags for the [*] tag
 		config.text = addBbcodeLevels(config.text); // add in level metadata
-
 		errQueue = checkParentChildRestrictions('bbcode', config.text, -1, '', '', config.text);
-
 		ret.html = parse(config);
-
 		if (ret.html.indexOf('[') !== -1 || ret.html.indexOf(']') !== -1) {
 			errQueue.push('Some tags appear to be misaligned.');
 		}
-
 		if (config.removeMisalignedTags) {
 			ret.html = ret.html.replace(/\[.*?\]/g, '');
 		}
 		if (config.addInLineBreaks) {
 			ret.html = '<div style="white-space:pre-wrap;">' + ret.html + '</div>';
 		}
-
 		if (!config.escapeHtml) {
 			ret.html = ret.html.replace('&#91;', '['); // put ['s back in
 			ret.html = ret.html.replace('&#93;', ']'); // put ['s back in
 		}
-
 		ret.error = errQueue.length !== 0;
 		ret.errorQueue = errQueue;
-
 		return ret;
 	};
-
 	return me;
 })();
 
