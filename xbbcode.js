@@ -113,6 +113,15 @@ var XBBCODE = (function() {
                 return '';
             }
         },
+				/* Added temporary [br][/br] tag */
+				'br': {
+					openTag: function(params, content) {
+							return '<br>';
+					},
+					closeTag: function(params, content) {
+							return '';
+					}
+				},
         "center": {
             openTag: function(params,content) {
                 return '<span class="xbbcode-center">';
