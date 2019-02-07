@@ -71,7 +71,7 @@ Including `xbbcode.js` will expose its API through an `XBBCODE` object that you 
   </script>
 </body>
 ```
-## Adding new tags
+## Adding new tags or replacing existing ones
 
 To add a new tag to your BBCode, add properties to the "tags" object inside of the XBBCODE 
 object. 
@@ -80,15 +80,21 @@ For example, say you wanted to add a tag called `[googleit]` which would change 
 contents into a link of its google search results. You'd implement that by adding this to 
 the tags object:
 ```js
-"googleit": {
-    openTag: function(params,content) {
-        var website = 'http://www.google.com/#q=' + content;
-        return '<a href="' + website + '">';
-    },
-    closeTag: function(params,content) {
-        return '</a>';
+XBBCODE.addTags({
+    "googleit": {
+        openTag: function(params,content) {
+            var website = 'http://www.google.com/#q=' + content;
+            return '<a href="' + website + '">';
+        },
+        closeTag: function(params,content) {
+            return '</a>';
+        }
     }
-}
+});
+var result = XBBCODE.process({
+    text: "[googleit]ta-da![/googleit]"
+});
+...
 ```
 That will transform this BBCode:
 
