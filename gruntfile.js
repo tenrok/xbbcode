@@ -38,7 +38,7 @@ module.exports = function(grunt) {
 			main: {
 				files: [{
 					src: ['xbbcode.js', 'xbbcode.css'],
-					dest: 'examples/'
+					dest: 'docs/'
 				}]
 			}
 		},
@@ -47,7 +47,7 @@ module.exports = function(grunt) {
 			server: {
 				options: {
 					port: 9001,
-					base: 'examples'
+					base: 'docs'
 				}
 			}
 		},
@@ -65,7 +65,7 @@ module.exports = function(grunt) {
 			},
 		},
 
-		clean: ['examples/xbbcode.js', 'examples/xbbcode.css']
+		clean: ['docs/xbbcode.js', 'docs/xbbcode.css']
 
 	});
 
