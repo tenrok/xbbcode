@@ -2,7 +2,7 @@
 
 This is an extendible BBCode parser for JavaScript. 
 
-Online demo: [Site 1](https://solodyagin.github.io/xbbcode/index.html), [Site 2](http://patorjk.com/bbcode-previewer/)
+Online demo: [patorjk.com](http://patorjk.com/bbcode-previewer/), [solodyagin.github.io](https://solodyagin.github.io/xbbcode/)
 
 ## Why I made this
 
@@ -55,7 +55,7 @@ Including `xbbcode.js` will expose its API through an `XBBCODE` object that you 
 ```html
 <head>
   <!-- Optional styling for .xbbcode-* classes -->
-  <link rel="stylesheet" type="text/css" href="xbbcode.css">
+  <link rel="stylesheet" href="xbbcode.css">
 </head>
 <body>
   <script src="xbbcode.js"></script>

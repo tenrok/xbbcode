@@ -4,13 +4,12 @@
 	"description": "Allows you to parse BBCode and to extend the markup to add your own tags.",
 	"devDependencies": {
 		"grunt": "latest",
+		"grunt-contrib-connect": "latest",
+		"grunt-contrib-copy": "latest",
+		"grunt-contrib-cssmin": "latest",
 		"grunt-contrib-jshint": "latest",
 		"grunt-contrib-uglify": "latest",
-		"grunt-contrib-cssmin": "latest",
-		"grunt-contrib-copy": "latest",
-		"grunt-contrib-connect": "latest",
-		"grunt-contrib-watch": "latest",
-		"grunt-contrib-clean": "latest"
+		"grunt-contrib-watch": "latest"
 	},
 	"main": "xbbcode.js",
 	"directories": {

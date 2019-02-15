@@ -5,12 +5,11 @@ module.exports = function(grunt) {
 		jshint: {
 			options: {
 				globals: {
-					//jQuery: true,
 					console: true,
 					module: true
 				}
 			},
-			files: ['xbbcode.js']
+			files: ['src/xbbcode.js']
 		},
 
 		uglify: {
@@ -21,7 +20,7 @@ module.exports = function(grunt) {
 			},
 			main: {
 				files: {
-					'xbbcode.min.js': 'xbbcode.js'
+					'dist/xbbcode.min.js': 'src/xbbcode.js'
 				}
 			}
 		},
@@ -29,17 +28,17 @@ module.exports = function(grunt) {
 		cssmin: {
 			main: {
 				files: {
-					'xbbcode.min.css': 'xbbcode.css'
+					'dist/xbbcode.min.css': 'src/xbbcode.css'
 				}
 			}
 		},
 
 		copy: {
 			main: {
-				files: [{
-					src: ['xbbcode.js', 'xbbcode.css'],
-					dest: 'docs/'
-				}]
+				expand: true,
+				cwd: 'dist/',
+				src: ['**'],
+				dest: 'docs/'
 			}
 		},
 
@@ -57,7 +56,7 @@ module.exports = function(grunt) {
 				livereload: true
 			},
 			main: {
-				files: ['xbbcode.js'],
+				files: ['src/xbbcode.js'],
 				tasks: ['check', 'minify', 'copy'],
 				options: {
 					atBegin: true
@@ -65,17 +64,14 @@ module.exports = function(grunt) {
 			},
 		},
 
-		clean: ['docs/xbbcode.js', 'docs/xbbcode.css']
-
 	});
 
+	grunt.loadNpmTasks('grunt-contrib-connect');
+	grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-cssmin');
-	grunt.loadNpmTasks('grunt-contrib-copy');
-	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-contrib-clean');
 
 	grunt.registerTask('check', 'jshint');
 	grunt.registerTask('minify', ['uglify', 'cssmin']);
