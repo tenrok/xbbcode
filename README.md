@@ -2,7 +2,7 @@
 
 This is an extendible BBCode parser for JavaScript. 
 
-Online demo: [patorjk.com](http://patorjk.com/bbcode-previewer/), [solodyagin.github.io](https://solodyagin.github.io/xbbcode/)
+Online demo: [patorjk.com](http://patorjk.com/bbcode-previewer/), [tenrok.github.io](https://tenrok.github.io/xbbcode/)
 
 ## Why I made this
 
